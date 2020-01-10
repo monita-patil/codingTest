@@ -55,10 +55,10 @@ public class AccountsControllerTest {
   @Test
   public void createDuplicateAccount() throws Exception {
     this.mockMvc.perform(post("/v1/accounts").contentType(MediaType.APPLICATION_JSON)
-      .content("{\"accountId\":\"Id-123\",\"balance\":1000}")).andExpect(status().isCreated());
+      .content("{\"accountId\":\"Id-124\",\"balance\":1000}")).andExpect(status().isCreated());
 
     this.mockMvc.perform(post("/v1/accounts").contentType(MediaType.APPLICATION_JSON)
-      .content("{\"accountId\":\"Id-123\",\"balance\":1000}")).andExpect(status().isBadRequest());
+      .content("{\"accountId\":\"Id-124\",\"balance\":1000}")).andExpect(status().isBadRequest());
   }
 
   @Test
@@ -70,7 +70,7 @@ public class AccountsControllerTest {
   @Test
   public void createAccountNoBalance() throws Exception {
     this.mockMvc.perform(post("/v1/accounts").contentType(MediaType.APPLICATION_JSON)
-      .content("{\"accountId\":\"Id-123\"}")).andExpect(status().isBadRequest());
+      .content("{\"accountId\":\"Id-125\"}")).andExpect(status().isBadRequest());
   }
 
   @Test
@@ -81,34 +81,13 @@ public class AccountsControllerTest {
   @Test
   public void createAccountNegativeBalance() throws Exception {
     this.mockMvc.perform(post("/v1/accounts").contentType(MediaType.APPLICATION_JSON)
-      .content("{\"accountId\":\"Id-123\",\"balance\":-1000}")).andExpect(status().isBadRequest());
+      .content("{\"accountId\":\"Id-126\",\"balance\":-1000}")).andExpect(status().isBadRequest());
   }
 
   @Test
   public void createAccountEmptyAccountId() throws Exception {
     this.mockMvc.perform(post("/v1/accounts").contentType(MediaType.APPLICATION_JSON)
       .content("{\"accountId\":\"\",\"balance\":1000}")).andExpect(status().isBadRequest());
-  }
-
-  @Test
-  public void getAccount() throws Exception {
-    String uniqueAccountId = "Id-" + System.currentTimeMillis();
-    Account account = new Account(uniqueAccountId, new BigDecimal("123.45"));
-    this.accountsService.createAccount(account);
-    this.mockMvc.perform(get("/v1/accounts/" + uniqueAccountId))
-      .andExpect(status().isOk())
-      .andExpect(
-        content().string("{\"accountId\":\"" + uniqueAccountId + "\",\"balance\":123.45}"));
-  }
-  
-  public void getDeposit() throws Exception {
-	  String uniqueAccountId = "Id-" + System.currentTimeMillis();
-	  Account account = new Account(uniqueAccountId, new BigDecimal("123.45"));
-	    this.accountsService.createAccount(account);
-	    this.mockMvc.perform(get("/v1/accounts/" + uniqueAccountId))
-	    .andExpect(status().isOk())
-	    .andExpect(
-	    		content().string("{\"accountId\":\"" + uniqueAccountId + "\",\"balance\":123.45}")); 
   }
   
 }
